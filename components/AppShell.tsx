@@ -123,6 +123,21 @@ export default function AppShell() {
     );
   }, [selected]);
 
+  const handleDelete = useCallback(
+    (id: string) => {
+      setOrders((prev) => {
+        const idx = prev.findIndex((o) => o.id === id);
+        const next = prev.filter((o) => o.id !== id);
+        if (selectedId === id) {
+          const newSelected = next[idx] ?? next[idx - 1] ?? next[0] ?? null;
+          setSelectedId(newSelected?.id ?? null);
+        }
+        return next;
+      });
+    },
+    [selectedId]
+  );
+
   return (
     <div className="h-screen w-screen flex flex-col bg-fit-bg">
       <TopBar
@@ -138,6 +153,7 @@ export default function AppShell() {
               orders={orders}
               selectedId={selectedId}
               onSelect={setSelectedId}
+              onDelete={handleDelete}
             />
             <PdfPreview order={selected} />
             <ExtractionPanel

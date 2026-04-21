@@ -6,11 +6,13 @@ import OrderCard from "./OrderCard";
 export default function OrderList({
   orders,
   selectedId,
-  onSelect
+  onSelect,
+  onDelete
 }: {
   orders: Order[];
   selectedId: string | null;
   onSelect: (id: string) => void;
+  onDelete?: (id: string) => void;
 }) {
   return (
     <aside className="w-[320px] shrink-0 border-r border-fit-border bg-white flex flex-col">
@@ -39,6 +41,7 @@ export default function OrderList({
             order={o}
             selected={o.id === selectedId}
             onClick={() => onSelect(o.id)}
+            onDelete={onDelete ? () => onDelete(o.id) : undefined}
           />
         ))}
       </div>

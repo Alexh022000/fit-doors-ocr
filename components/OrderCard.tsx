@@ -20,18 +20,30 @@ function StatusPill({ status }: { status: OrderStatus }) {
 export default function OrderCard({
   order,
   selected,
-  onClick
+  onClick,
+  onDelete
 }: {
   order: Order;
   selected: boolean;
   onClick: () => void;
+  onDelete?: () => void;
 }) {
   const articleCount = order.extraction?.line_items.length ?? null;
 
+  const handleKey = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onClick();
+    }
+  };
+
   return (
-    <button
+    <div
       onClick={onClick}
-      className={`w-full text-left rounded-lg border transition-all px-3 py-3 flex items-start gap-3 ${
+      onKeyDown={handleKey}
+      role="button"
+      tabIndex={0}
+      className={`group w-full text-left rounded-lg border transition-all px-3 py-3 flex items-start gap-3 cursor-pointer focus:outline-none focus:ring-2 focus:ring-fit-red/40 ${
         selected
           ? "bg-fit-red-light border-fit-red shadow-sm"
           : "bg-white border-fit-border hover:border-fit-red/40 hover:bg-fit-red-light/30"
@@ -61,7 +73,27 @@ export default function OrderCard({
           <div className="font-semibold text-fit-ink text-sm truncate">
             {order.display_name}
           </div>
-          <StatusPill status={order.status} />
+          <div className="flex items-center gap-1 shrink-0">
+            <StatusPill status={order.status} />
+            {onDelete && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (window.confirm(`Supprimer le BDC "${order.display_name}" ?`)) {
+                    onDelete();
+                  }
+                }}
+                className="opacity-0 group-hover:opacity-100 w-6 h-6 rounded hover:bg-red-100 text-fit-muted hover:text-red-600 flex items-center justify-center transition-all"
+                aria-label={`Supprimer ${order.display_name}`}
+                title="Supprimer ce BDC"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                  <path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6h14z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
         <div className="text-xs text-fit-muted mt-0.5 truncate">
           <span className="inline-flex items-center gap-1">
@@ -82,6 +114,6 @@ export default function OrderCard({
           <span>{order.uploaded_at_short}</span>
         </div>
       </div>
-    </button>
+    </div>
   );
 }
