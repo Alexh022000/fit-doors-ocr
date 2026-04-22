@@ -31,30 +31,29 @@ export default function PdfPreview({ order }: { order: Order | null }) {
       </div>
 
       {/* Corps */}
-      <div className="flex-1 overflow-auto flex items-start justify-center p-6">
+      <div className="flex-1 min-h-0 flex items-stretch justify-center p-3">
         {!order && (
-          <div className="text-white/60 text-sm mt-16">
+          <div className="text-white/60 text-sm mt-16 self-start">
             Sélectionne un BDC à gauche
           </div>
         )}
 
         {order && order.file_data_url && order.mime_type.includes("pdf") && (
-          <object
-            data={order.file_data_url}
-            type="application/pdf"
-            className="w-full h-full min-h-[600px] rounded-lg shadow-xl bg-white"
-          >
-            <div className="bg-white p-4 text-sm text-fit-muted text-center">
-              Aperçu indisponible — <a href={order.file_data_url} className="text-fit-red underline" target="_blank" rel="noreferrer">ouvrir le fichier</a>
-            </div>
-          </object>
+          <iframe
+            // #navpanes=0 masque la sidebar de miniatures de Chrome
+            // #toolbar=1 garde la barre d'outils (zoom, download)
+            // #view=FitH force un fit horizontal -> le document prend toute la largeur dispo
+            src={`${order.file_data_url}#navpanes=0&toolbar=1&view=FitH`}
+            title={order.filename}
+            className="w-full h-full rounded-lg shadow-xl bg-white border-0"
+          />
         )}
 
         {order && order.file_data_url && !order.mime_type.includes("pdf") && (
           <img
             src={order.file_data_url}
             alt={order.filename}
-            className="max-w-full h-auto rounded-lg shadow-xl bg-white"
+            className="max-w-full max-h-full object-contain rounded-lg shadow-xl bg-white"
           />
         )}
 
