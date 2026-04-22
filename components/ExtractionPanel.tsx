@@ -80,15 +80,20 @@ export default function ExtractionPanel({
   order,
   onExtract,
   onRetry,
-  onValidate
+  onValidate,
+  width
 }: {
   order: Order | null;
   onExtract: () => void;
   onRetry: () => void;
   onValidate: () => void;
+  width?: number;
 }) {
   return (
-    <section className="w-[540px] shrink-0 bg-white flex flex-col">
+    <section
+      style={width ? { width: `${width}px` } : undefined}
+      className="shrink-0 bg-white flex flex-col min-w-0"
+    >
       {/* ---------- Idle : aucun ordre sélectionné ---------- */}
       {!order && (
         <div className="flex-1 flex items-center justify-center text-center p-10">

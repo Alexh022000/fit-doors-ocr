@@ -9,7 +9,7 @@ import type { Order } from "@/lib/types";
  */
 export default function PdfPreview({ order }: { order: Order | null }) {
   return (
-    <section className="flex-1 border-r border-fit-border bg-[#2A3345] flex flex-col min-w-0">
+    <section className="flex-1 bg-[#2A3345] flex flex-col min-w-0">
       {/* Header */}
       <div className="h-14 bg-white border-b border-fit-border flex items-center justify-between px-5 shrink-0">
         <div className="font-bold text-fit-ink text-sm tracking-wider uppercase">

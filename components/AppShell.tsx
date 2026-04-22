@@ -8,6 +8,7 @@ import OrderList from "./OrderList";
 import PdfPreview from "./PdfPreview";
 import ExtractionPanel from "./ExtractionPanel";
 import UploadModal from "./UploadModal";
+import ResizableDivider from "./ResizableDivider";
 import { GedView, StatsView } from "./SecondaryTabs";
 
 type Tab = "traitement" | "ged" | "stats";
@@ -28,6 +29,8 @@ export default function AppShell() {
   );
   const [uploadOpen, setUploadOpen] = useState(false);
   const [tab, setTab] = useState<Tab>("traitement");
+  const [leftWidth, setLeftWidth] = useState<number>(320);
+  const [rightWidth, setRightWidth] = useState<number>(540);
 
   const selected = useMemo(
     () => orders.find((o) => o.id === selectedId) ?? null,
@@ -154,13 +157,29 @@ export default function AppShell() {
               selectedId={selectedId}
               onSelect={setSelectedId}
               onDelete={handleDelete}
+              width={leftWidth}
+            />
+            <ResizableDivider
+              currentWidth={leftWidth}
+              onResize={setLeftWidth}
+              direction="left"
+              min={240}
+              max={520}
             />
             <PdfPreview order={selected} />
+            <ResizableDivider
+              currentWidth={rightWidth}
+              onResize={setRightWidth}
+              direction="right"
+              min={360}
+              max={820}
+            />
             <ExtractionPanel
               order={selected}
               onExtract={handleExtract}
               onRetry={handleExtract}
               onValidate={handleValidate}
+              width={rightWidth}
             />
           </>
         )}

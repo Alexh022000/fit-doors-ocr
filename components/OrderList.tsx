@@ -7,15 +7,20 @@ export default function OrderList({
   orders,
   selectedId,
   onSelect,
-  onDelete
+  onDelete,
+  width
 }: {
   orders: Order[];
   selectedId: string | null;
   onSelect: (id: string) => void;
   onDelete?: (id: string) => void;
+  width?: number;
 }) {
   return (
-    <aside className="w-[320px] shrink-0 border-r border-fit-border bg-white flex flex-col">
+    <aside
+      style={width ? { width: `${width}px` } : undefined}
+      className="shrink-0 bg-white flex flex-col min-w-0"
+    >
       {/* Header */}
       <div className="px-4 h-14 flex items-center justify-between border-b border-fit-border shrink-0">
         <div className="font-bold text-fit-ink text-sm tracking-wider uppercase">
